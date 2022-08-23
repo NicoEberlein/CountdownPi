@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+    	<meta charset="utf-8"/>
+        <title>Pfingsttagung Bobengrün</title>
+        <link rel=”stylesheet” href=”https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css”rel=”nofollow” integrity=”sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm” crossorigin=”anonymous”>
+        <link rel="stylesheet" th:href="@{/css/countdown.css}"/>
+        <script th:src="@{/js/countdown.js}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="text-center">
+		
+        	<img name="ot-both-image" src="logo0.png" width="550" height="550"/>
+        	
+            <h1 id="ot-both-motd">Livestream der<br/>Pfingsttagung Bobengr&uumln</h1>
+            
+            <span id="ot-message-text"></span>
+            
+            <div id="ot-countdown-countdown">
+                 
+	           	<p id="ot-countdown-premesage">los geht's in </p>
+	           	
+	            <span name="ot-countdown-hours"></span>
+	            <span id="ot-countdown-hours-label"> Stunden </span><br/>
+	            
+	            <span name="ot-countdown-minutes"></span>
+	            <span id="ot-countdown-minutes-label"> Minuten</span>
+	                    
+        	</div>
+        	
+        </div>
+        
+	</body>
+	
+</html>
