@@ -9,55 +9,65 @@
 
 	<body>
 
-		<div class="card text-center">
-			<div class="card-header">
-				<ul class="nav nav-pills card-header-pills">
-					<li class="nav-item">
-						<button id="button-countdown" class="btn btn-dark" onclick="buttonClick('COUNTDOWN')">COUNTDOWN</button>
-					</li>
-					<li class="nav-item">
-						<button id="button-message" class="btn btn-light" onclick="buttonClick('MESSAGE')">MESSAGE</button>
-					</li>
-				</ul>
-			</div>
-			<div class="card-body">
+		<div class="container-sm">
 
-				<div class="row">
+			<div class="card text-center">
+				<div class="card-header">
+					<ul class="nav nav-pills card-header-pills">
+						<li class="nav-item">
+							<button id="button-countdown" class="btn btn-dark" onclick="buttonClick('COUNTDOWN')">COUNTDOWN</button>
+						</li>
+						<li class="nav-item">
+							<button id="button-message" class="btn btn-light" onclick="buttonClick('MESSAGE')">MESSAGE</button>
+						</li>
+					</ul>
+				</div>
 
-					<div class="col">
+				<div class="card-body">
 
-						<form id="countdown-settings-form" action="javascript:void(0);">
+					<form id="countdown-settings-form" action="javascript:void(0);">
 
-							<select id="ot-selector-hidden" name="operationType" style="display: none;">
-								<option id="ot-selection-hidden" value="COUNTDOWN"></option>
-							</select>
+						<select id="ot-selector-hidden" name="operationType" style="display: none;">
+							<option id="ot-selection-hidden" value="COUNTDOWN"></option>
+						</select>
 
-							<select id="ot-both-background-mode" name="backgroundMode">
+						<div class="form-group">
+							<label for="ot-both-background-mode">BackgroundMode</label>
+							<select class="form-control" id="ot-both-background-mode" name="backgroundMode">
 								<option value="BLURREDIMAGE">BLURREDIMAGE</option>
 								<option value="ONECOLOR">ONECOLOR</option>
 							</select>
+						</div>
 
+						<div class="form-group">
 							<label for="ot-both-input-images">Images</label>
-							<select id="ot-both-input-images" name="image">
+							<select class="form-control" id="ot-both-input-images" name="image">
 							</select>
+						</div>
 
+						<div class="from-group">
 							<label for="ot-both-input-heading">Heading</label>
-							<input id="ot-both-input-heading" type="text" name="heading"/>
+							<input class="form-control" id="ot-both-input-heading" type="text" name="heading"/>
+						</div>
 
+						<div class="from-group">
 							<label for="ot-countdown-input-date">Date</label>
-							<input id="ot-countdown-input-date" type="date" name="date">
+							<input class="form-control" id="ot-countdown-input-date" type="date" name="date">
+						</div>
 
+						<div class="from-group">
 							<label for="ot-countdown-input-time">Time</label>
-							<input id="ot-countdown-input-time" type="time" name="time">
+							<input class="form-control" id="ot-countdown-input-time" type="time" name="time">
+						</div>
 
+						<div class="from-group">
 							<label for="ot-message-input-message">Message</label>
-							<input id="ot-message-input-message" type="text" name="message" readonly>
+							<input class="form-control" id="ot-message-input-message" type="text" name="message" readonly>
+						</div>
 
-							<button onClick="sendFormData()">Submit</button>
+						<button onClick="sendFormData()">Submit</button>
 
-						</form>
-
-					</div>
+					</form>
 
 				</div>
 
