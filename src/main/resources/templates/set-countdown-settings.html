@@ -2,32 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 	<head>
-		<link rel=”stylesheet” href=”https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css”rel=”nofollow” integrity=”sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm” crossorigin=”anonymous”>
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{/css/set-countdown-settings.css}"/>
 		<script th:src="@{/js/set-countdown-settings.js}"></script>
 	</head>
 
 	<body>
-	
-		<form id="operationModeSelector">
-		
-			<input id="countdown" type="radio" name="operation-type" value="COUNTDOWN">
-			<input id="message" type="radio" name="operation-type" value="MESSAGE">
+
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col">
+					<button id="button-countdown" class="ml-0 btn btn-dark" onclick="buttonClick('COUNTDOWN')">COUNTDOWN</button>
+				</div>
+				<div class="col">
+					<button id="button-message" class="btn btn-light" onclick="buttonClick('MESSAGE')">MESSAGE</button>
+				</div>
+				
+			</div>
+
+			<div class="row">
 			
-		</form>
-		
-		<form>
-		
-			<select name="background-mode">
-				<option value="">
-				<option>
-			</select>
-		
-			<input type="">
-			</input>
-		
-		</form>
+				<div class="col">
+
+					<form id="countdown-settings-form" action="javascript:void(0);">
 	
+						<select id="ot-selector-hidden" name="operationType" style="display: none;">
+							<option id="ot-selection-hidden" value="COUNTDOWN"></option>
+						</select>
+	
+						<select id="ot-both-background-mode" name="backgroundMode">
+							<option value="BLURREDIMAGE">BLURREDIMAGE</option>
+							<option value="ONECOLOR">ONECOLOR</option>
+						</select>
+	
+						<label for="ot-both-input-images">Images</label>
+						<select id="ot-both-input-images" name="image">
+						</select>
+	
+						<label for="ot-both-input-heading">Heading</label>
+						<input id="ot-both-input-heading" type="text" name="heading"/>
+	
+						<label for="ot-countdown-input-date">Date</label>
+						<input id="ot-countdown-input-date" type="date" name="date">
+	
+						<label for="ot-countdown-input-time">Time</label>
+						<input id="ot-countdown-input-time" type="time" name="time">
+	
+						<label for="ot-message-input-message">Message</label>
+						<input id="ot-message-input-message" type="text" name="message" readonly>
+	
+						<button onClick="sendFormData()">Submit</button>
+	
+					</form>
+
+				</div>
+			
+			</div>
+
+		</div>
 	
 	</body>
 	
