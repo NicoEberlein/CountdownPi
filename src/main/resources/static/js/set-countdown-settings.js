@@ -1,19 +1,126 @@
 window.onload = function() {
+
+	sendRequest(injectAvailableImages, window.location.origin + "/rest/getAvailableLogos", "GET", null, new Headers());
+	buttonClick("COUNTDOWN");
 	
-	let operationModeForm = document.getElementById("operationModeSelector");
-	
-	operationModeForm.addEventListener('change', function() {
+	document.getElementById("ot-both-background-mode").addEventListener("change", function() {
 		
-		if(document.getElementById("countdown").checked) {
+		if(document.getElementById("ot-both-background-mode").value === "BLURREDIMAGE") {
 			
-			//Hide Message shit)
+			document.getElementById("bm-onecolor-color").disabled = true;
+
+		}else if(document.getElementById("ot-both-background-mode").value === "ONECOLOR") {
 			
-		}else if(document.getElementById("message").checked) {
-			
-			//Hide Countdown Shit
+			document.getElementById("bm-onecolor-color").disabled = false;
 			
 		}
 		
-	})
+	});
+
+}
+
+function buttonClick(buttonType) {
+
+	if(buttonType === "COUNTDOWN") {
+
+		document.getElementById("ot-selection-hidden").value = "COUNTDOWN";
+		document.getElementById("ot-message-input-message").readOnly = true;
+		document.getElementById("ot-countdown-input-date").readOnly = false;
+		document.getElementById("ot-countdown-input-time").readOnly = false;
+		document.getElementById("button-countdown").setAttribute("class", "btn btn-dark");
+		document.getElementById("button-message").setAttribute("class", "btn btn-light");
+
+	}else if(buttonType === "MESSAGE") {
+
+		document.getElementById("ot-selection-hidden").value = "MESSAGE";
+		document.getElementById("ot-message-input-message").readOnly = false;
+		document.getElementById("ot-countdown-input-date").readOnly = true;
+		document.getElementById("ot-countdown-input-time").readOnly = true;
+		document.getElementById("button-countdown").setAttribute("class", "btn btn-light");
+		document.getElementById("button-message").setAttribute("class", "btn btn-dark");
+
+	}
+}
+
+function sendRequest(functionToCall, url, type, body, headers){
+	let request = {
+		method: type,
+		headers: headers,
+		body: body
+	};
+	fetch(url, request)
+		.then(response => { return response.json() })
+		.then(data => {
+			if(functionToCall != null) {
+				functionToCall(data);
+			}
+		});
+}
+
+function injectAvailableImages(images) {
+	
+	for(i=0;i<images.length;i++) {
+		document.getElementById("ot-both-input-images").options.add(new Option(images[i], images[i]));
+	}
 	
 }
+
+function validateFormData() {
+
+	var body = new FormData(document.getElementById("countdown-settings-form"));
+
+	if(body.get("heading") != null) {
+
+		if(body.get("operationType") === "COUNTDOWN") {
+
+			if(body.get("date") != null && body.get("time") != null) {
+
+				sendFormData(body);
+
+			}else{
+				//showError();
+			}
+
+		}else if(body.get("operationType") === "MESSAGE") {
+
+			if(body.get("message") != null) {
+
+				sendFormData(body);
+
+			}else{
+				//showError();
+			}
+
+		}
+
+	}else{
+		//showError();
+	}
+
+}
+
+function sendFormData(body) {
+
+	console.log(body.get("date"));
+	console.log(body.get("time"));
+	var datetime = body.get("date") + "-" + body.get("time");
+
+	body.delete("date");
+	body.delete("time");
+
+	body.append("datetime", datetime);
+
+
+	sendRequest(
+		null,
+		window.location.origin + "/rest/setCountdownSettings",
+		"POST",
+		body,
+		new Headers()
+	);
+}
+
+
+
+
+
