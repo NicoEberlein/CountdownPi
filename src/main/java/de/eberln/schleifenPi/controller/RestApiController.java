@@ -70,9 +70,11 @@ public class RestApiController {
 			@RequestParam("image") String image,
 			@RequestParam("heading") String heading,
 			@RequestParam("datetime") String datetime,
-			@RequestParam("message") String message) {
+			@RequestParam("message") String message,
+			@RequestParam("color") String color) {
 		
 		
+		System.out.println(color);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
 		Date parsedDate = null;
 		try {
