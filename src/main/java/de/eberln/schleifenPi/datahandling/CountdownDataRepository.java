@@ -20,7 +20,7 @@ public class CountdownDataRepository {
 	@Autowired
 	private ObjectMapper mapper;
 	
-	public ResponseEntity<Object> setCountdownData(CountdownData countdownData) {
+	public ResponseEntity<Object> saveCountdownData(CountdownData countdownData) {
 		
 		try {
 			mapper.writeValue(new File(pathToCountdownData), countdownData);
@@ -33,7 +33,7 @@ public class CountdownDataRepository {
 		
 	}
 	
-	public ResponseEntity<CountdownData> getCountdownData() {
+	public ResponseEntity<CountdownData> readCountdownData() {
 		
 		try {
 			
@@ -41,8 +41,10 @@ public class CountdownDataRepository {
 			return new ResponseEntity<CountdownData>(countdownData, HttpStatus.OK);
 			
 		}catch(IOException e) {
+			
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
 		}
 		
 	}

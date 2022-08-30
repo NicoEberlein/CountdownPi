@@ -35,7 +35,7 @@ public class RestApiController {
 	@GetMapping("/getCountdownData")
 	public ResponseEntity<CountdownData> countdownData() {
 
-		return countdownDataRepository.getCountdownData();
+		return countdownDataRepository.readCountdownData();
 
 	}
 
@@ -84,7 +84,7 @@ public class RestApiController {
 		}
 		System.out.println(parsedDate);
 		
-		return countdownDataRepository.setCountdownData(new CountdownData(operationType, backgroundMode, image, heading, parsedDate, message));
+		return countdownDataRepository.saveCountdownData(new CountdownData(operationType, backgroundMode, image, heading, parsedDate, message));
 		
 	}
 
