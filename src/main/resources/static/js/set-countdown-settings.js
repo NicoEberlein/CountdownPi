@@ -73,7 +73,7 @@ function validateFormData() {
 
 		if(body.get("operationType") === "COUNTDOWN") {
 
-			if(body.get("date") != null && body.get("time") != null) {
+			if(body.get("date").length != 0 && body.get("time").length != 0) {
 
 				sendFormData(body);
 
@@ -83,7 +83,7 @@ function validateFormData() {
 
 		}else if(body.get("operationType") === "MESSAGE") {
 
-			if(body.get("message") != null) {
+			if(body.get("message").length != null) {
 
 				sendFormData(body);
 
