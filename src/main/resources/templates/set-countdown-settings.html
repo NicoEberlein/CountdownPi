@@ -31,43 +31,83 @@
 							<option id="ot-selection-hidden" value="COUNTDOWN"></option>
 						</select>
 
-						<div class="mt-3 form-group">
-							<label class="form-label" for="ot-both-background-mode">BackgroundMode</label>
-							<select class="form-control" id="ot-both-background-mode" value="BLURREDIMAGE" name="backgroundMode">
-								<option value="BLURREDIMAGE">BLURREDIMAGE</option>
-								<option value="ONECOLOR">ONECOLOR</option>
-							</select>
-						</div>
-						
-						<div class="mt-3 form-group">
-							<label class="form-label" for="bm-onecolor-color">Background Color</label>
-							<input class="form-control" id="bm-onecolor-color" type="color" name="color" disabled>
+						<div class="row">
+
+							<div class="mt-3 form-group">
+								<label class="form-label" for="ot-both-background-mode">BackgroundMode</label>
+								<select class="form-control" id="ot-both-background-mode" value="BLURREDIMAGE" name="backgroundMode">
+									<option value="BLURREDIMAGE">BLURREDIMAGE</option>
+									<option value="ONECOLOR">ONECOLOR</option>
+								</select>
+							</div>
+
 						</div>
 
-						<div class="mt-3 form-group">
-							<label class="form-label" for="ot-both-input-images">Images</label>
-							<select class="form-control" id="ot-both-input-images" name="image">
-							</select>
+
+						<div class="row">
+
+							<div class="mt-3 form-group">
+								<label class="form-label" for="bm-onecolor-color">Background Color</label>
+								<input class="form-control" id="bm-onecolor-color" type="color" name="color" disabled>
+							</div>
+
 						</div>
 
-						<div class="mt-3 from-group">
-							<label class="form-label" for="ot-both-input-heading">Heading</label>
-							<input class="form-control" id="ot-both-input-heading" type="text" name="heading"/>
+
+						<div class="row">
+
+							<div class="col-11">
+								<div class="mt-3 form-group">
+									<label class="form-label" for="ot-both-input-images">Select Logo</label>
+									<select class="form-control" id="ot-both-input-images" name="image">
+									</select>
+								</div>
+							</div>
+							<div class="col-1">
+								<label class="form-label mt-3" for="logo-upload">Upload</label>
+								<button class="btn btn-primary" id="logo-upload">...</button>
+							</div>
+
 						</div>
 
-						<div class="mt-3 from-group">
-							<label class="form-label" for="ot-countdown-input-date">Date</label>
-							<input class="form-control" id="ot-countdown-input-date" type="date" name="date">
+
+						<div class="row">
+
+							<div class="mt-3 from-group">
+								<label class="form-label" for="ot-both-input-heading">Heading</label>
+								<input class="form-control" id="ot-both-input-heading" type="text" name="heading"/>
+							</div>
+
 						</div>
 
-						<div class="mt-3 from-group">
-							<label class="form-label" for="ot-countdown-input-time">Time</label>
-							<input class="form-control" id="ot-countdown-input-time" type="time" name="time">
+
+						<div class="row">
+
+							<div class="mt-3 from-group">
+								<label class="form-label" for="ot-countdown-input-date">Date</label>
+								<input class="form-control" id="ot-countdown-input-date" type="date" name="date">
+							</div>
+
 						</div>
 
-						<div class="mt-3 from-group">
-							<label class="form-label" for="ot-message-input-message">Message</label>
-							<input class="form-control" id="ot-message-input-message" type="text" name="message" readonly>
+
+						<div class="row">
+
+							<div class="mt-3 from-group">
+								<label class="form-label" for="ot-countdown-input-time">Time</label>
+								<input class="form-control" id="ot-countdown-input-time" type="time" name="time">
+							</div>
+
+						</div>
+
+
+						<div class="row">
+
+							<div class="mt-3 from-group">
+								<label class="form-label" for="ot-message-input-message">Message</label>
+								<input class="form-control" id="ot-message-input-message" type="text" name="message" readonly>
+							</div>
+
 						</div>
 
 						<button class="mt-3 btn btn-success" onClick="validateFormData()">Submit</button>
