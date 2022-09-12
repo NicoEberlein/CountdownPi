@@ -1,6 +1,7 @@
 window.onload = function() {
 
 	sendRequest(injectAvailableImages, window.location.origin + "/rest/getAvailableLogos", "GET", null, new Headers());
+	
 	buttonClick("COUNTDOWN");
 	
 	document.getElementById("ot-both-background-mode").addEventListener("change", function() {
@@ -68,41 +69,36 @@ function injectAvailableImages(images) {
 function validateFormData() {
 
 	var body = new FormData(document.getElementById("countdown-settings-form"));
-
-	if(body.get("heading") != null) {
-
-		if(body.get("operationType") === "COUNTDOWN") {
-
-			if(body.get("date").length != 0 && body.get("time").length != 0) {
-
-				sendFormData(body);
-
-			}else{
-				//showError();
-			}
-
-		}else if(body.get("operationType") === "MESSAGE") {
-
-			if(body.get("message").length != null) {
-
-				sendFormData(body);
-
-			}else{
-				//showError();
-			}
-
-		}
-
-	}else{
-		//showError();
+	
+	if(body.get("backgroundMode") === "BLURREDIMAGE") {
+		body.append("color", null);
 	}
-
+	
+	if(body.get("image") == null) {
+		//showError();
+		return;
+	}
+	if(body.get("heading") == null) {
+		//showError();
+		return;
+	}
+	if(body.get("operationType") === "COUNTDOWN") {
+		if(body.get("date").length == 0 && body.get("time").length == 0) {
+			//showError();
+			return;
+		}
+	}else if(body.get("operationType") === "MESSAGE") {
+		if(body.get("message").length == null) {
+			//showError();
+			return;
+		}
+	}
+	
+	sendFormData(body);
 }
 
 function sendFormData(body) {
 
-	console.log(body.get("date"));
-	console.log(body.get("time"));
 	var datetime = body.get("date") + "-" + body.get("time");
 
 	body.delete("date");
