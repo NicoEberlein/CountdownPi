@@ -1,1 +1,0 @@
-{"operationType":"COUNTDOWN","backgroundMode":"BLURREDIMAGE","image":"logo9.png","heading":"888","date":61622096400000,"message":null}
