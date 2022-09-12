@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class CountdownDataRepositoryFilesystemImpl implements CountdownDataRepository{
+public class SettingsRepositoryFilesystemImpl implements SettingsRepository{
 
 	@Value("${application.pathToCountdownData}")
 	private String pathToCountdownData;
@@ -20,7 +20,7 @@ public class CountdownDataRepositoryFilesystemImpl implements CountdownDataRepos
 	@Autowired
 	private ObjectMapper mapper;
 	
-	public ResponseEntity<Object> saveCountdownData(CountdownData countdownData) {
+	public ResponseEntity<Object> saveCountdownData(Settings countdownData) {
 		
 		try {
 			mapper.writeValue(new File(pathToCountdownData), countdownData);
@@ -33,12 +33,12 @@ public class CountdownDataRepositoryFilesystemImpl implements CountdownDataRepos
 		
 	}
 	
-	public ResponseEntity<CountdownData> readCountdownData() {
+	public ResponseEntity<Settings> readCountdownData() {
 		
 		try {
 			
-			CountdownData countdownData = mapper.readValue(new File(pathToCountdownData), CountdownData.class);
-			return new ResponseEntity<CountdownData>(countdownData, HttpStatus.OK);
+			Settings countdownData = mapper.readValue(new File(pathToCountdownData), Settings.class);
+			return new ResponseEntity<Settings>(countdownData, HttpStatus.OK);
 			
 		}catch(IOException e) {
 			

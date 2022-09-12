@@ -2,10 +2,10 @@ package de.eberln.schleifenPi.datahandling;
 
 import org.springframework.http.ResponseEntity;
 
-public interface CountdownDataRepository {
+public interface SettingsRepository {
 
-	public ResponseEntity<Object> saveCountdownData(CountdownData countdownData);
+	public ResponseEntity<Object> saveCountdownData(Settings countdownData);
 	
-	public ResponseEntity<CountdownData> readCountdownData();
+	public ResponseEntity<Settings> readCountdownData();
 	
 }
