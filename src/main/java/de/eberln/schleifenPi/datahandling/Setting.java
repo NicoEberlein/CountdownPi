@@ -1,5 +1,16 @@
 package de.eberln.schleifenPi.datahandling;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = OTMessageSetting.class, name = "Message"),
+
+    @JsonSubTypes.Type(value = OTCountdownSetting.class, name = "Countdown") }
+)
 public abstract class Setting {
 
 	public enum OperationType {
