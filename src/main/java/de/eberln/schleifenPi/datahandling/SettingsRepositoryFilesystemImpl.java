@@ -9,43 +9,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class SettingsRepositoryFilesystemImpl implements SettingsRepository{
 
-	@Value("${application.pathToCountdownData}")
-	private String pathToCountdownData;
+	@Value("${application.pathToCountdownSettings}")
+	private String pathToCountdownSettings;
 	
 	@Autowired
 	private ObjectMapper mapper;
 	
-	public ResponseEntity<Object> saveCountdownData(Settings countdownData) {
+	public void saveCountdownSettings(Setting countdownSettings) throws IOException {
 		
-		try {
-			mapper.writeValue(new File(pathToCountdownData), countdownData);
-		}catch(IOException e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+		mapper.writeValue(new File(pathToCountdownSettings), countdownSettings);
+
 		
 	}
 	
-	public ResponseEntity<Settings> readCountdownData() {
+	public Setting readCountdownSettings() throws IOException{
 		
-		try {
-			
-			Settings countdownData = mapper.readValue(new File(pathToCountdownData), Settings.class);
-			return new ResponseEntity<Settings>(countdownData, HttpStatus.OK);
-			
-		}catch(IOException e) {
-			
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		}
+		Setting settings = mapper.readValue(new File(pathToCountdownSettings), Setting.class);
+		return settings;
 		
 	}
 	

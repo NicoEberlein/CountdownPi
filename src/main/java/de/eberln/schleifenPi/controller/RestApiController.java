@@ -3,6 +3,7 @@ package de.eberln.schleifenPi.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,29 +25,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.eberln.schleifenPi.datahandling.Settings;
-import de.eberln.schleifenPi.datahandling.Settings.BackgroundMode;
-import de.eberln.schleifenPi.datahandling.Settings.OperationType;
+import de.eberln.schleifenPi.datahandling.Setting;
+import de.eberln.schleifenPi.datahandling.Setting.BackgroundMode;
+import de.eberln.schleifenPi.datahandling.Setting.OperationType;
 import de.eberln.schleifenPi.datahandling.SettingsRepository;
-import de.eberln.schleifenPi.datahandling.OTCountdownSettings;
-import de.eberln.schleifenPi.datahandling.OTMessageSettings;
+import de.eberln.schleifenPi.datahandling.OTCountdownSetting;
+import de.eberln.schleifenPi.datahandling.OTMessageSetting;
 
 @RestController
 @RequestMapping("/rest")
 public class RestApiController {
 
 	@Autowired
-	private SettingsRepository countdownDataRepository;
+	private SettingsRepository settingsRepository;
 
 	@Value("${application.imagePath}")
 	private String imagePath;
 
+	
+	
 	@GetMapping("/countdownData/get")
-	public ResponseEntity<Settings> countdownData() {
+	public ResponseEntity<Setting> countdownData() {
 
-		return countdownDataRepository.readCountdownData();
+		Setting settings = null;
+		try {
+			settings = settingsRepository.readCountdownSettings();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
+		}
+		
+		return ResponseEntity.ok(settings);
 
 	}
+	
 
 	@GetMapping("/getAvailableLogos")
 	public ResponseEntity<ArrayList<String>> getAvailableLogos() {
@@ -105,18 +117,29 @@ public class RestApiController {
 			try {
 				parsedDate = format.parse(datetime);
 			} catch (ParseException e) {
-				e.printStackTrace();
+				return ResponseEntity.badRequest().headers(new HttpHeaders()).body("Error parsing provided date");
 			}
 			
-			return countdownDataRepository.saveCountdownData(new OTCountdownSettings(operationType, backgroundMode, image, heading, color, parsedDate));
+			try {
+				settingsRepository.saveCountdownSettings(new OTCountdownSetting(operationType, backgroundMode, image, heading, color, parsedDate));
+			} catch (IOException e) {
+				e.printStackTrace();
+				return ResponseEntity.badRequest().build();
+			}
 			
 		}else if(operationType == OperationType.MESSAGE) {
 		
-			return countdownDataRepository.saveCountdownData(new OTMessageSettings(operationType, backgroundMode, image, heading, color, message));
+			try {
+				settingsRepository.saveCountdownSettings(new OTMessageSetting(operationType, backgroundMode, image, heading, color, message));
+			} catch (IOException e) {
+				e.printStackTrace();
+				return ResponseEntity.badRequest().build();
+			}
 			
 		}
 		
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return ResponseEntity.ok().build();
+
 		
 
 	}

@@ -1,11 +1,11 @@
 package de.eberln.schleifenPi.datahandling;
 
-import org.springframework.http.ResponseEntity;
+import java.io.IOException;
 
 public interface SettingsRepository {
 
-	public ResponseEntity<Object> saveCountdownData(Settings countdownData);
+	public void saveCountdownSettings(Setting countdownSettings) throws IOException;
 	
-	public ResponseEntity<Settings> readCountdownData();
+	public Setting readCountdownSettings() throws IOException;
 	
 }
