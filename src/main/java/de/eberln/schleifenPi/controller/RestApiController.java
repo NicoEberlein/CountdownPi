@@ -24,23 +24,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.eberln.schleifenPi.datahandling.CountdownData;
-import de.eberln.schleifenPi.datahandling.CountdownData.BackgroundMode;
-import de.eberln.schleifenPi.datahandling.CountdownData.OperationType;
-import de.eberln.schleifenPi.datahandling.CountdownDataRepository;
+import de.eberln.schleifenPi.datahandling.Settings;
+import de.eberln.schleifenPi.datahandling.Settings.BackgroundMode;
+import de.eberln.schleifenPi.datahandling.Settings.OperationType;
+import de.eberln.schleifenPi.datahandling.SettingsRepository;
+import de.eberln.schleifenPi.datahandling.OTCountdownSettings;
+import de.eberln.schleifenPi.datahandling.OTMessageSettings;
 
 @RestController
 @RequestMapping("/rest")
 public class RestApiController {
 
 	@Autowired
-	private CountdownDataRepository countdownDataRepository;
+	private SettingsRepository countdownDataRepository;
 
 	@Value("${application.imagePath}")
 	private String imagePath;
 
 	@GetMapping("/countdownData/get")
-	public ResponseEntity<CountdownData> countdownData() {
+	public ResponseEntity<Settings> countdownData() {
 
 		return countdownDataRepository.readCountdownData();
 
