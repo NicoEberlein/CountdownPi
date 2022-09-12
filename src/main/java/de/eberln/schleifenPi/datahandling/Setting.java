@@ -1,6 +1,6 @@
 package de.eberln.schleifenPi.datahandling;
 
-public abstract class Settings {
+public abstract class Setting {
 
 	public enum OperationType {
 		COUNTDOWN,
@@ -26,7 +26,7 @@ public abstract class Settings {
 	//null when BackgroundMode = BLURREDIMAGE
 	private String color;
 	
-	public Settings(OperationType operationType, BackgroundMode backgroundMode, String image, String heading, String color) {
+	public Setting(OperationType operationType, BackgroundMode backgroundMode, String image, String heading, String color) {
 		
 		this.operationType = operationType;
 		this.backgroundMode = backgroundMode;
@@ -36,7 +36,7 @@ public abstract class Settings {
 
 	}
 	
-	public Settings( ) {
+	public Setting( ) {
 		
 	}
 
