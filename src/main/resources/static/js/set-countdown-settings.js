@@ -110,10 +110,9 @@ function sendFormData(body) {
 
 	body.append("datetime", datetime);
 
-
 	sendRequest(
 		null,
-		window.location.origin + "/rest/setCountdownSettings",
+		window.location.origin + "/rest/countdownData/set",
 		"POST",
 		body,
 		new Headers()
