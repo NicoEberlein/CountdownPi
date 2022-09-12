@@ -93,7 +93,7 @@ public class RestApiController {
 			headers.setContentType(MediaType.IMAGE_PNG);
 		}else {
 			
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().build();
 			
 		}
 		
@@ -102,10 +102,10 @@ public class RestApiController {
 		try {
 			in = new FileInputStream(new File(imagePath + image));
 		} catch (FileNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 		
-		return new ResponseEntity<InputStreamResource>(new InputStreamResource(in), headers, HttpStatus.OK);
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
 
 	@PostMapping(value = "/countdownData/set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -113,6 +113,7 @@ public class RestApiController {
 			@RequestParam("backgroundMode") BackgroundMode backgroundMode, @RequestParam("image") String image,
 			@RequestParam("heading") String heading, @RequestParam("datetime") String datetime,
 			@RequestParam("message") String message, @RequestParam("color") String color) {
+		
 		
 		if(operationType == OperationType.COUNTDOWN) {
 		
