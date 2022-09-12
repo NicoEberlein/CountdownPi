@@ -10,6 +10,18 @@ public class OTMessageSettings extends Settings {
 		this.message = message;
 	}
 
+	public OTMessageSettings() {
+		super();
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	
 	
 }

@@ -12,4 +12,18 @@ public class OTCountdownSettings extends Settings {
 		this.date = date;
 	}
 	
+	public OTCountdownSettings() {
+		super();
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	
+	
 }
