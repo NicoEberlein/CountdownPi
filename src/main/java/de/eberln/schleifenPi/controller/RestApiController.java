@@ -65,15 +65,19 @@ public class RestApiController {
 
 		ArrayList<String> files = new ArrayList<String>();
 
-		for (File fileEntry : new File(imagePath).listFiles()) {
-			files.add(fileEntry.getName());
+		try {
+			
+			for (File fileEntry : new File(imagePath).listFiles()) {
+				files.add(fileEntry.getName());
+			}
+			
+		}catch(NullPointerException e) {
+			
+			return ResponseEntity.noContent().build();
+			
 		}
-
-		if (files.size() > 0) {
-			return new ResponseEntity<>(files, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		
+		return ResponseEntity.ok(files);
 
 	}
 
