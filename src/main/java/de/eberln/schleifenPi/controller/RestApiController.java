@@ -97,19 +97,27 @@ public class RestApiController {
 			@RequestParam("backgroundMode") BackgroundMode backgroundMode, @RequestParam("image") String image,
 			@RequestParam("heading") String heading, @RequestParam("datetime") String datetime,
 			@RequestParam("message") String message, @RequestParam("color") String color) {
-
-		System.out.println(color);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
-		Date parsedDate = null;
-		try {
-			parsedDate = format.parse(datetime);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		
+		if(operationType == OperationType.COUNTDOWN) {
+		
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
+			Date parsedDate = null;
+			try {
+				parsedDate = format.parse(datetime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			return countdownDataRepository.saveCountdownData(new OTCountdownSettings(operationType, backgroundMode, image, heading, color, parsedDate));
+			
+		}else if(operationType == OperationType.MESSAGE) {
+		
+			return countdownDataRepository.saveCountdownData(new OTMessageSettings(operationType, backgroundMode, image, heading, color, message));
+			
 		}
-		System.out.println(parsedDate);
-
-		return countdownDataRepository.saveCountdownData(
-				new CountdownData(operationType, backgroundMode, image, heading, parsedDate, message));
+		
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 
 	}
 
