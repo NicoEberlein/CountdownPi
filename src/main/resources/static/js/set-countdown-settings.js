@@ -103,16 +103,9 @@ function sendFormData(body) {
 
 	body.delete("date");
 	body.delete("time");
-
 	body.append("datetime", datetime);
 
-	sendRequest(
-		null,
-		window.location.origin + "/rest/countdownData",
-		"POST",
-		body,
-		new Headers()
-	);
+	sendRequest(null, window.location.origin + "/rest/countdownData", "POST", body, new Headers());
 }
 
 
