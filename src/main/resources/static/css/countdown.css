@@ -1,23 +1,26 @@
 body{
 	
-		/*BackgroundMode = ONECOLOR*/
+		/*BackgroundMode = ONECOLOR
         background: #FF00FF;
+        */
         
-        /*BackgroundMode = BLURREDIMAGE*/
+        /*BackgroundMode = BLURREDIMAGE
         background-image: url("5.jpg");
         background-repeat: no-repeat;
         background-position: center;
-        
         background-size: cover;
+        */
         
-        /*Font Settings*/       
-        font-family: 'Lato', sans-serif;
+        /*Font Settings*/
+        font-family: 'Roboto', sans-serif;
         font-weight: 700;
-        font-size: 35px;
+        font-size: 60px;
         text-shadow: 2px 2px 11px rgba(0, 0, 0, 1);
+        color: white;
         
-        /*Hide cursor and scroll bar*/
+        /*Hide cursor and scroll bar
         cursor: none;
         overflow: hidden;
+        */
 }
 
