@@ -108,7 +108,7 @@ function sendFormData(body) {
 
 	sendRequest(
 		null,
-		window.location.origin + "/rest/countdownData/set",
+		window.location.origin + "/rest/countdownData",
 		"POST",
 		body,
 		new Headers()

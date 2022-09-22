@@ -41,26 +41,6 @@ public class RestApiController {
 
 	@Value("${application.imagePath}")
 	private String imagePath;
-
-	
-	
-	@GetMapping("/countdownData/get")
-	public ResponseEntity<Setting> countdownData() {
-
-		Setting settings = null;
-		try {
-			settings = settingsRepository.readCountdownSettings();
-		}catch(FileNotFoundException e) {
-			e.printStackTrace();
-			return ResponseEntity.notFound().build();
-		}catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.internalServerError().build();
-		}
-		
-		return ResponseEntity.ok(settings);
-
-	}
 	
 
 	@GetMapping("/getAvailableLogos")
@@ -84,7 +64,7 @@ public class RestApiController {
 
 	}
 
-	@GetMapping(value = "/getImage/{image}")
+	@GetMapping("/getImage/{image}")
 	@ResponseBody
 	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image)  {
 		
@@ -111,7 +91,25 @@ public class RestApiController {
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
 
-	@PostMapping(value = "/countdownData/set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@GetMapping("/countdownData")
+	public ResponseEntity<Setting> countdownData() {
+
+		Setting settings = null;
+		try {
+			settings = settingsRepository.readCountdownSettings();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
+		}
+		
+		return ResponseEntity.ok(settings);
+
+	}
+	
+	@PostMapping(value = "/countdownData", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Object> setCountdownData(@RequestParam("operationType") OperationType operationType,
 			@RequestParam("backgroundMode") BackgroundMode backgroundMode, @RequestParam("image") String image,
 			@RequestParam("heading") String heading, @RequestParam("datetime") String datetime,
