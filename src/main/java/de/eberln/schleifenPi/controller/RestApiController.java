@@ -50,7 +50,10 @@ public class RestApiController {
 		Setting settings = null;
 		try {
 			settings = settingsRepository.readCountdownSettings();
-		} catch (IOException e) {
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}catch (IOException e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().build();
 		}
