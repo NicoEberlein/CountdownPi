@@ -50,11 +50,21 @@ function sendRequest(functionToCall, url, type, body, headers){
 		body: body
 	};
 	fetch(url, request)
-		.then(response => { return response.json() })
+		.then(response => {
+			console.log(response.status);
+			if(response.ok) {
+				return response.json();
+			}else{
+				throw new Error(response.status);
+			}
+		})
 		.then(data => {
 			if(functionToCall != null) {
 				functionToCall(data);
 			}
+		})
+		.catch(function(err) {
+			console.log(err);
 		});
 }
 
