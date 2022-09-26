@@ -16,6 +16,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,7 @@ public class RestApiController {
 	private String imagePath;
 	
 
+	@CrossOrigin
 	@GetMapping("/getAvailableLogos")
 	public ResponseEntity<ArrayList<String>> getAvailableLogos() {
 
@@ -63,6 +65,7 @@ public class RestApiController {
 
 	}
 
+	@CrossOrigin
 	@GetMapping("/getImage/{image}")
 	@ResponseBody
 	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image)  {
@@ -90,6 +93,7 @@ public class RestApiController {
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
 
+	@CrossOrigin
 	@GetMapping("/countdownData")
 	public ResponseEntity<Setting> countdownData() {
 
