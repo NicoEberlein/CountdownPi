@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication
-public class SchleifenPiApplication {
+public class CountdownPiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SchleifenPiApplication.class, args);
+		SpringApplication.run(CountdownPiApplication.class, args);
 	}
 	
 	@Bean
