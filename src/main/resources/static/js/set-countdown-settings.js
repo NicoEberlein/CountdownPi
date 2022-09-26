@@ -51,11 +51,11 @@ function sendRequest(functionToCall, url, type, body, headers){
 	};
 	fetch(url, request)
 		.then(response => {
-			console.log(response.status);
+
 			if(response.ok) {
 				return response.json();
 			}else{
-				throw new Error(response.status);
+				return Promise.reject(response);
 			}
 		})
 		.then(data => {
@@ -63,8 +63,10 @@ function sendRequest(functionToCall, url, type, body, headers){
 				functionToCall(data);
 			}
 		})
-		.catch(function(err) {
-			console.log(err);
+		.catch((response) => {
+			response.json().then(body => {
+				console.error(body.code + " - " + body.message);
+			})
 		});
 }
 
