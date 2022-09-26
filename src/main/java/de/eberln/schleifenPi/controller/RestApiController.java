@@ -62,7 +62,7 @@ public class RestApiController {
 
 	@GetMapping("/getImage/{image}")
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image) throws FileNotFoundException, IllegalArgumentException  {
+	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image) throws IllegalArgumentException, FileNotFoundException  {
 		
 		HttpHeaders headers = new HttpHeaders();
 		
@@ -78,7 +78,13 @@ public class RestApiController {
 		
 		InputStream in = null;
 		
-		in = new FileInputStream(new File(imagePath + image));
+		
+		try {
+			in = new FileInputStream(new File(imagePath + image));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			throw new FileNotFoundException("The image " + image + " was not found on the server");
+		}
 		
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
