@@ -9,15 +9,11 @@
 }*/
 
 var eventDate;
+var countdownIntervalId = null;
 
 window.onload = function() {
     receiveCountdownData();
     window.setInterval(receiveCountdownData, 5000);
-    window.setInterval(function() {
-        var timeDiff = calculateTimeDiff(eventDate);
-        document.getElementById("ot-countdown-hours").innerHTML = timeDiff.hours;
-        document.getElementById("ot-countdown-minutes").innerHTML = timeDiff.minutes;
-    }, 1000);
 }
 
 function receiveCountdownData() {
@@ -31,10 +27,16 @@ function processCountdownData(data) {
         document.getElementById("ot-message-text").hidden = true;
 
         eventDate = data.date;
+        if(countdownIntervalId == null) {
+            startCountdown();
+        }
 
     }else if(data.operationType === "MESSAGE") {
         document.getElementById("ot-message-text").hidden = false;
         document.getElementById("ot-countdown-countdown").hidden = true;
+        document.getElementById("ot-message-text").innerHTML = data.message;
+
+        clearCountdown();
     }
 
     if(data.backgroundMode === "BLURREDIMAGE") {
@@ -47,6 +49,29 @@ function processCountdownData(data) {
     document.getElementById("ot-both-logo").setAttribute("src", window.location.origin + "/rest/getImage/" + data.image);
     document.getElementById("ot-both-heading").innerHTML = data.heading;
 
+}
+
+function startCountdown() {
+    countdownIntervalId = window.setInterval(function() {
+        var timeDiff = calculateTimeDiff(eventDate);
+        if(timeDiff.hours > 0) {
+            document.getElementById("ot-countdown-hours").hidden = false;
+            document.getElementById("ot-countdown-hours-value").innerHTML = timeDiff.hours;
+        }else{
+            document.getElementById("ot-countdown-hours").hidden = true;
+        }
+        if(timeDiff.minutes > 0) {
+            document.getElementById("ot-countdown-minutes").hidden = false;
+            document.getElementById("ot-countdown-minutes-value").innerHTML = timeDiff.minutes;
+        }else{
+            document.getElementById("ot-countdown-minutes").hidden = true;
+        }
+    }, 1000);
+}
+
+function clearCountdown() {
+    window.clearInterval(countdownIntervalId);
+    countdownIntervalId = null;
 }
 
 function calculateTimeDiff(dateInFuture) {
@@ -64,6 +89,7 @@ function calculateTimeDiff(dateInFuture) {
     if(milliDiff > 0) {
 
         var minutes = Math.floor(milliDiff / 1000 / 60);
+        timeDiff.minutes = minutes;
         if(minutes > 60) {
             timeDiff.hours = Math.floor(minutes / 60);
             timeDiff.minutes = minutes - timeDiff.hours * 60;
