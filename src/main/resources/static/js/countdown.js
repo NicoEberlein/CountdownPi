@@ -1,13 +1,3 @@
-/*{
-    "@type": "Countdown",
-    "operationType": "COUNTDOWN",
-    "backgroundMode": "ONECOLOR",
-    "image": "a.jpg",
-    "heading": "Hallo",
-    "color": "#c8d421",
-    "date": "2022-05-10T09:18:00.000Z"
-}*/
-
 var eventDate;
 var countdownIntervalId = null;
 
@@ -28,7 +18,9 @@ function processCountdownData(data) {
 
         eventDate = data.date;
         if(countdownIntervalId == null) {
-            startCountdown();
+	
+				startCountdown();	
+            
         }
 
     }else if(data.operationType === "MESSAGE") {
@@ -52,18 +44,30 @@ function processCountdownData(data) {
 }
 
 function startCountdown() {
-    countdownIntervalId = window.setInterval(function() {
-        var timeDiff = calculateTimeDiff(eventDate);
-        if(timeDiff.hours > 0) {
+
+    countdownIntervalId = window.setInterval(function () {
+
+        var timeDiff={
+            hours: 0,
+            minutes: 0
+        };
+
+        try {
+            timeDiff = calculateTimeDiff(eventDate);
+        } catch (err) {
+            console.error(err.message);
+        }
+
+        if (timeDiff.hours > 0) {
             document.getElementById("ot-countdown-hours").hidden = false;
             document.getElementById("ot-countdown-hours-value").innerHTML = timeDiff.hours;
-        }else{
+        } else {
             document.getElementById("ot-countdown-hours").hidden = true;
         }
-        if(timeDiff.minutes > 0) {
+        if (timeDiff.minutes > 0) {
             document.getElementById("ot-countdown-minutes").hidden = false;
             document.getElementById("ot-countdown-minutes-value").innerHTML = timeDiff.minutes;
-        }else{
+        } else {
             document.getElementById("ot-countdown-minutes").hidden = true;
         }
     }, 1000);
@@ -96,7 +100,7 @@ function calculateTimeDiff(dateInFuture) {
         }
 
     }else{
-        throw "The specified date is in the past.";
+        throw new Error("The specified date is in the past.");
     }
 
     return timeDiff;
@@ -104,17 +108,26 @@ function calculateTimeDiff(dateInFuture) {
 }
 
 
-function sendRequest(functionToCall, url, type, body, headers){
+function sendRequest(functionToCall, url, type, body, headers) {
     let request = {
         method: type,
         headers: headers,
         body: body
     };
     fetch(url, request)
-        .then(response => { return response.json() })
+        .then(response => {
+            if(response.ok) {
+                return response.json();
+            }else{
+                throw new Error("Error " + response.status + " occured");
+            }
+        })
         .then(data => {
-            if(functionToCall != null) {
+            if (functionToCall != null) {
                 functionToCall(data);
             }
+        })
+        .catch(function(err) {
+            console.error(err);
         });
 }
