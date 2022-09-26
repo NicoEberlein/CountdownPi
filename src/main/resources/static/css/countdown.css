@@ -24,3 +24,16 @@ body{
         */
 }
 
+hr{
+	border: 0;
+    border: 3px solid white;
+    border-radius: 3px;
+	opacity: 0.8;
+}
+
+#ot-both-logo{
+	width: 550px;
+	heigth: 550px;
+	margin: 0 auto 0 auto;
+}
+
