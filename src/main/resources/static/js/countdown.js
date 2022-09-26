@@ -32,7 +32,7 @@ function processCountdownData(data) {
     }
 
     if(data.backgroundMode === "BLURREDIMAGE") {
-        document.body.style.backgroundImage = "url('http://localhost:8080/rest/getImage/5.jpg')";
+        document.body.style.backgroundImage = "url('" + window.location.origin + "/rest/getImage/5.jpg')";
         document.body.style.backgroundSize = "cover";
     }else if(data.backgroundMode === "ONECOLOR") {
         document.body.style.background = data.color;
