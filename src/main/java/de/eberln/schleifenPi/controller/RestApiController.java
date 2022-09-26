@@ -48,18 +48,15 @@ public class RestApiController {
 	public ResponseEntity<ArrayList<String>> getAvailableLogos() {
 
 		ArrayList<String> files = new ArrayList<String>();
-
-		try {
 			
+		try {
 			for (File fileEntry : new File(imagePath).listFiles()) {
 				files.add(fileEntry.getName());
 			}
-			
 		}catch(NullPointerException e) {
-			
-			return ResponseEntity.noContent().build();
-			
+			throw new NullPointerException("No image folder found on server");
 		}
+
 		
 		return ResponseEntity.ok(files);
 
@@ -68,7 +65,7 @@ public class RestApiController {
 	@CrossOrigin
 	@GetMapping("/getImage/{image}")
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image)  {
+	public ResponseEntity<InputStreamResource> getImageWithMediaType(@PathVariable String image) throws IllegalArgumentException, FileNotFoundException  {
 		
 		HttpHeaders headers = new HttpHeaders();
 		
@@ -78,34 +75,33 @@ public class RestApiController {
 			headers.setContentType(MediaType.IMAGE_PNG);
 		}else {
 			
-			return ResponseEntity.badRequest().build();
+			throw new IllegalArgumentException("No suitable file extension provided");
 			
 		}
 		
 		InputStream in = null;
 		
+		
 		try {
 			in = new FileInputStream(new File(imagePath + image));
 		} catch (FileNotFoundException e) {
-			return ResponseEntity.notFound().build();
+			e.printStackTrace();
+			throw new FileNotFoundException("The image " + image + " was not found on the server");
 		}
 		
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
+	
 
 	@CrossOrigin
 	@GetMapping("/countdownData")
-	public ResponseEntity<Setting> countdownData() {
+	public ResponseEntity<Setting> countdownData() throws IOException {
 
 		Setting settings = null;
 		try {
 			settings = settingsRepository.readCountdownSettings();
-		}catch(FileNotFoundException e) {
-			e.printStackTrace();
-			return ResponseEntity.notFound().build();
 		}catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.internalServerError().build();
+			throw new IOException("An error occured while reading countdownSettings from repository");
 		}
 		
 		return ResponseEntity.ok(settings);
@@ -116,7 +112,7 @@ public class RestApiController {
 	public ResponseEntity<Object> setCountdownData(@RequestParam("operationType") OperationType operationType,
 			@RequestParam("backgroundMode") BackgroundMode backgroundMode, @RequestParam("image") String image,
 			@RequestParam("heading") String heading, @RequestParam("datetime") String datetime,
-			@RequestParam("message") String message, @RequestParam("color") String color) {
+			@RequestParam("message") String message, @RequestParam("color") String color) throws ParseException, IOException {
 		
 		
 		if(operationType == OperationType.COUNTDOWN) {
@@ -126,14 +122,15 @@ public class RestApiController {
 			try {
 				parsedDate = format.parse(datetime);
 			} catch (ParseException e) {
-				return ResponseEntity.badRequest().headers(new HttpHeaders()).body("Error parsing provided date");
+				e.printStackTrace();
+				throw new ParseException("Error parsing provided date. Please enter date in format yyyy-MM-dd-hh:mm", 0);
 			}
 			
 			try {
 				settingsRepository.saveCountdownSettings(new OTCountdownSetting(operationType, backgroundMode, image, heading, color, parsedDate));
 			} catch (IOException e) {
 				e.printStackTrace();
-				return ResponseEntity.badRequest().build();
+				throw new IOException("An error occured while saving countdownSettings to repository");
 			}
 			
 		}else if(operationType == OperationType.MESSAGE) {
@@ -142,7 +139,7 @@ public class RestApiController {
 				settingsRepository.saveCountdownSettings(new OTMessageSetting(operationType, backgroundMode, image, heading, color, message));
 			} catch (IOException e) {
 				e.printStackTrace();
-				return ResponseEntity.badRequest().build();
+				throw new IOException("An error occured while saving countdownSettings to repository");
 			}
 			
 		}

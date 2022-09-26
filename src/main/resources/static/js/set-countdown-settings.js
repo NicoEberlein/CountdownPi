@@ -50,11 +50,30 @@ function sendRequest(functionToCall, url, type, body, headers){
 		body: body
 	};
 	fetch(url, request)
-		.then(response => { return response.json() })
+		.then(response => {
+
+			if(response.ok) {
+				return response.json();
+			}else{
+				return Promise.reject(response);
+			}
+		})
 		.then(data => {
 			if(functionToCall != null) {
 				functionToCall(data);
 			}
+		})
+		.catch((response) => {
+			response.json().then(body => {
+				console.error(body.code + " - " + body.message);
+
+				let error_div = document.createElement("div");
+				error_div.setAttribute("class", "alert alert-danger mt-1");
+				error_div.innerHTML = body.message;
+
+				document.getElementById("errors").appendChild(error_div);
+
+			})
 		});
 }
 
