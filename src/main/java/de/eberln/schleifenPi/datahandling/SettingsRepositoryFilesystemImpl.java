@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class SettingsRepositoryFilesystemImpl implements SettingsRepository{
 
-	@Value("${application.pathToCountdownSettings}")
+	@Value("${application.pathToCountdownSettings:countdown-settings.txt}")
 	private String pathToCountdownSettings;
 	
 	@Autowired

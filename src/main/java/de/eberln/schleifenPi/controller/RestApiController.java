@@ -39,7 +39,7 @@ public class RestApiController {
 	@Autowired
 	private SettingsRepository settingsRepository;
 
-	@Value("${application.imagePath}")
+	@Value("${application.imagePath:images/}")
 	private String imagePath;
 	
 
