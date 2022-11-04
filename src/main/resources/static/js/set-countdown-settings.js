@@ -49,71 +49,91 @@ function sendRequest(functionToCall, url, type, body, headers){
 		headers: headers,
 		body: body
 	};
+	let responseObj = {
+		responseCode: null,
+		responseBody: null
+	}
 	fetch(url, request)
 		.then(response => {
-
-			if(response.ok) {
-				return response.json();
-			}else{
-				return Promise.reject(response);
-			}
+			responseObj.responseCode = response.status;
+			return response.json();
 		})
 		.then(data => {
-			if(functionToCall != null) {
-				functionToCall(data);
-			}
+			responseObj.responseBody = data;
+			functionToCall(responseObj);
 		})
 		.catch((response) => {
-			response.json().then(body => {
-				console.error(body.code + " - " + body.message);
-
-				let error_div = document.createElement("div");
-				error_div.setAttribute("class", "alert alert-danger mt-1");
-				error_div.innerHTML = body.message;
-
-				document.getElementById("errors").appendChild(error_div);
-
-			})
+			appendError("Server returned error with code " + responseObj.responseCode);
 		});
 }
 
-function injectAvailableImages(images) {
+function injectAvailableImages(responseObj) {
 	
-	for(i=0;i<images.length;i++) {
-		document.getElementById("ot-both-input-images").options.add(new Option(images[i], images[i]));
+	for(i=0;i<responseObj.responseBody.length;i++) {
+		document.getElementById("ot-both-input-images").options.add(new Option(responseObj.responseBody[i], responseObj.responseBody[i]));
 	}
 	
 }
 
 function validateFormData() {
 
+	clearErrors();
+
 	var body = new FormData(document.getElementById("countdown-settings-form"));
 	
 	if(body.get("backgroundMode") === "BLURREDIMAGE") {
 		body.append("color", null);
 	}
-	
+
+	let errorPresent = false;
+
 	if(body.get("image") == null) {
-		//showError();
-		return;
+		appendError("You must select a logo");
+		errorPresent = true;
 	}
-	if(body.get("heading") == null) {
-		//showError();
-		return;
+
+	if(body.get("heading").length == 0) {
+		appendError("You must specify a heading");
+		errorPresent = true;
 	}
 	if(body.get("operationType") === "COUNTDOWN") {
 		if(body.get("date").length == 0 && body.get("time").length == 0) {
-			//showError();
-			return;
+			appendError("Neither date nor time can be null");
+			errorPresent = true;
 		}
 	}else if(body.get("operationType") === "MESSAGE") {
-		if(body.get("message").length == null) {
-			//showError();
-			return;
+		if(body.get("message").length == 0) {
+			appendError("You must specify a message");
+			errorPresent = true;
 		}
 	}
-	
-	sendFormData(body);
+
+	if(!errorPresent) {
+		sendFormData(body);
+	}
+
+}
+
+function appendError(message) {
+	let error_div = document.createElement("div");
+	error_div.setAttribute("class", "alert alert-danger mt-1");
+	error_div.innerHTML = message;
+
+	document.getElementById("errors").appendChild(error_div);
+}
+
+function clearErrors() {
+	let errors = document.getElementsByClassName("alert");
+	for(var i=0;i<errors.length;i++) {
+		document.getElementById("errors").removeChild(errors[i]);
+	}
+}
+
+function showSuccessMessage(responseObj) {
+	console.log(responseObj);
+	let success_div = document.createElement("div");
+	success_div.setAttribute("class", "alert alert-success mt-1");
+	success_div.innerHTML = "The data was sucessfully transmitted";
 }
 
 function sendFormData(body) {
@@ -124,7 +144,7 @@ function sendFormData(body) {
 	body.delete("time");
 	body.append("datetime", datetime);
 
-	sendRequest(null, window.location.origin + "/rest/countdownData", "POST", body, new Headers());
+	sendRequest(showSuccessMessage, window.location.origin + "/rest/countdownData", "POST", body, new Headers());
 }
 
 
