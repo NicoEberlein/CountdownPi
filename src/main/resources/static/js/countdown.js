@@ -59,9 +59,20 @@ function startCountdown() {
         }
 
         if (timeDiff.hours > 0) {
+			//If event is more than one hour in future: show hours-div and inner hour count
+			
+			if(timeDiff.hours == 1) {
+				//Use singular in ot-countdown-hours-label
+				document.getElementById("ot-countdown-hours-label").innerHTML = " Stunde ";
+			}else{
+				//Use plural in ot-countdown-hours-label
+				document.getElementById("ot-countdown-hours-label").innerHTML = " Stunden ";
+			}
+			
             document.getElementById("ot-countdown-hours").hidden = false;
             document.getElementById("ot-countdown-hours-value").innerHTML = timeDiff.hours;
         } else {
+			//If event less than one hour in future: hide hours-div
             document.getElementById("ot-countdown-hours").hidden = true;
         }
         if (timeDiff.minutes > 0) {
