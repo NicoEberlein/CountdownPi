@@ -26,8 +26,7 @@ public class SettingsRepositoryFilesystemImpl implements SettingsRepository{
 	
 	public Setting readCountdownSettings() throws IOException{
 		
-		Setting settings = mapper.readValue(new File(pathToCountdownSettings), Setting.class);
-		return settings;
+		return mapper.readValue(new File(pathToCountdownSettings), Setting.class);
 		
 	}
 	
