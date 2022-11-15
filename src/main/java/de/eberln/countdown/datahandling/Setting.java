@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi.datahandling;
+package de.eberln.countdown.datahandling;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
