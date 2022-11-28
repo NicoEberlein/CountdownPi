@@ -69,13 +69,13 @@ public class RestApiController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		
-		if(image.endsWith(".jpg")) {
+		if(image.endsWith(".jpg") || image.endsWith(".jpeg")) {
 			headers.setContentType(MediaType.IMAGE_JPEG);
 		}else if(image.endsWith(".png")) {
 			headers.setContentType(MediaType.IMAGE_PNG);
 		}else {
 			
-			throw new IllegalArgumentException("No suitable file extension provided");
+			throw new IllegalArgumentException("No suitable file extension provided. Allowed filename suffixes are jpg, jpeg and png");
 			
 		}
 		
