@@ -50,27 +50,40 @@ function sendRequest(functionToCall, url, type, body, headers){
 		body: body
 	};
 	let responseObj = {
-		responseCode: null,
-		responseBody: null
+		responseBody: null,
+		responseStatus: null
 	}
+
 	fetch(url, request)
-		.then(response => {
-			responseObj.responseCode = response.status;
-			return response.json();
+		.then(function(response) {
+			if(!response.ok) {
+				throw Error(response.status);
+			}
+			responseObj.responseStatus = response.status;
+			return response.text();
 		})
-		.then(data => {
-			responseObj.responseBody = data;
+		.then(function(text) {
+			if(text.length > 0) {
+				return JSON.parse(text);
+			}else{
+				return null;
+			}
+		})
+		.then(function(response){
+			responseObj.responseBody = response;
 			functionToCall(responseObj);
 		})
-		.catch((response) => {
-			appendError("Server returned error with code " + responseObj.responseCode);
+		.catch(function(error) {
+			console.log(error.message);
+			appendError("Server returned error with code " + error.message);
 		});
 }
 
 function injectAvailableImages(responseObj) {
-	
-	for(i=0;i<responseObj.responseBody.length;i++) {
-		document.getElementById("ot-both-input-images").options.add(new Option(responseObj.responseBody[i], responseObj.responseBody[i]));
+
+	let response = responseObj.responseBody;
+	for(i=0;i<response.length;i++) {
+		document.getElementById("ot-both-input-images").options.add(new Option(response[i], response[i]));
 	}
 	
 }
@@ -97,7 +110,7 @@ function validateFormData() {
 		errorPresent = true;
 	}
 	if(body.get("operationType") === "COUNTDOWN") {
-		if(body.get("date").length == 0 && body.get("time").length == 0) {
+		if(body.get("date").length == 0 || body.get("time").length == 0) {
 			appendError("Neither date nor time can be null");
 			errorPresent = true;
 		}
@@ -119,7 +132,7 @@ function appendError(message) {
 	error_div.setAttribute("class", "alert alert-danger mt-1");
 	error_div.innerHTML = message;
 
-	document.getElementById("errors").appendChild(error_div);
+	document.getElementById("status").appendChild(error_div);
 }
 
 function clearErrors() {
@@ -130,10 +143,13 @@ function clearErrors() {
 }
 
 function showSuccessMessage(responseObj) {
-	console.log(responseObj);
-	let success_div = document.createElement("div");
-	success_div.setAttribute("class", "alert alert-success mt-1");
-	success_div.innerHTML = "The data was sucessfully transmitted";
+	if(responseObj.responseStatus == 200) {
+		let success_div = document.createElement("div");
+		success_div.setAttribute("class", "alert alert-success mt-1");
+		success_div.innerHTML = "The data was sucessfully transmitted to the server";
+
+		document.getElementById("status").appendChild(success_div);
+	}
 }
 
 function sendFormData(body) {
