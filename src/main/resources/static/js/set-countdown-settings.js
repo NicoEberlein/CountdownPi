@@ -50,27 +50,40 @@ function sendRequest(functionToCall, url, type, body, headers){
 		body: body
 	};
 	let responseObj = {
-		responseCode: null,
-		responseBody: null
+		responseBody: null,
+		responseStatus: null
 	}
+
 	fetch(url, request)
-		.then(response => {
-			responseObj.responseCode = response.status;
-			return response.json();
+		.then(function(response) {
+			if(!response.ok) {
+				throw Error(response.status);
+			}
+			responseObj.responseStatus = response.status;
+			return response.text();
 		})
-		.then(data => {
-			responseObj.responseBody = data;
+		.then(function(text) {
+			if(text.length > 0) {
+				return JSON.parse(text);
+			}else{
+				return null;
+			}
+		})
+		.then(function(response){
+			responseObj.responseBody = response;
 			functionToCall(responseObj);
 		})
-		.catch((response) => {
-			appendError("Server returned error with code " + responseObj.responseCode);
+		.catch(function(error) {
+			console.log(error.message);
+			appendError("Server returned error with code " + error.message);
 		});
 }
 
 function injectAvailableImages(responseObj) {
-	
-	for(i=0;i<responseObj.responseBody.length;i++) {
-		document.getElementById("ot-both-input-images").options.add(new Option(responseObj.responseBody[i], responseObj.responseBody[i]));
+
+	let response = responseObj.responseBody;
+	for(i=0;i<response.length;i++) {
+		document.getElementById("ot-both-input-images").options.add(new Option(response[i], response[i]));
 	}
 	
 }
