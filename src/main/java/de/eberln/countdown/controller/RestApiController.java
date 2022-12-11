@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi.controller;
+package de.eberln.countdown.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.eberln.schleifenPi.datahandling.Setting;
-import de.eberln.schleifenPi.datahandling.Setting.BackgroundMode;
-import de.eberln.schleifenPi.datahandling.Setting.OperationType;
-import de.eberln.schleifenPi.datahandling.SettingsRepository;
-import de.eberln.schleifenPi.datahandling.OTCountdownSetting;
-import de.eberln.schleifenPi.datahandling.OTMessageSetting;
+import de.eberln.countdown.datahandling.OTCountdownSetting;
+import de.eberln.countdown.datahandling.OTMessageSetting;
+import de.eberln.countdown.datahandling.Setting;
+import de.eberln.countdown.datahandling.SettingsRepository;
+import de.eberln.countdown.datahandling.Setting.BackgroundMode;
+import de.eberln.countdown.datahandling.Setting.OperationType;
 
 @RestController
 @RequestMapping("/rest")

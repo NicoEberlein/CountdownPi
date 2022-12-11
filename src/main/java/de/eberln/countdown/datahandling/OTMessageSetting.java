@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi.datahandling;
+package de.eberln.countdown.datahandling;
 
 public class OTMessageSetting extends Setting {
 

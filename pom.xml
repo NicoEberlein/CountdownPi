@@ -8,10 +8,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>de.eberln</groupId>
-	<artifactId>schleifenPi</artifactId>
+	<artifactId>countdown</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>schleifenPi</name>
-	<description>Software Schleifen Pi v4.0</description>
+	<name>countdown</name>
+	<description>Software Countdown v4.0</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

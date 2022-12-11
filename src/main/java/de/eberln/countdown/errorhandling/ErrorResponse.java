@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi.errorhandling;
+package de.eberln.countdown.errorhandling;
 
 import java.util.Date;
 

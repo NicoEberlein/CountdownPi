@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi;
+package de.eberln.countdown;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

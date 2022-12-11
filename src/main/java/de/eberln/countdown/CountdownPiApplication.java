@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi;
+package de.eberln.countdown;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +15,7 @@ public class CountdownPiApplication {
 	
 	@Bean
 	public ObjectMapper objectMapper() {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper;
+		return new ObjectMapper();
 	}
 
 }

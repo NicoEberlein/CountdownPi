@@ -1,4 +1,4 @@
-package de.eberln.schleifenPi.datahandling;
+package de.eberln.countdown.datahandling;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -37,7 +37,7 @@ public abstract class Setting {
 	//null when BackgroundMode = BLURREDIMAGE
 	private String color;
 	
-	public Setting(OperationType operationType, BackgroundMode backgroundMode, String image, String heading, String color) {
+	protected Setting(OperationType operationType, BackgroundMode backgroundMode, String image, String heading, String color) {
 		
 		this.operationType = operationType;
 		this.backgroundMode = backgroundMode;
@@ -47,7 +47,7 @@ public abstract class Setting {
 
 	}
 	
-	public Setting( ) {
+	protected Setting( ) {
 		
 	}
 
