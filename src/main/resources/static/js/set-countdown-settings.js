@@ -97,7 +97,7 @@ function validateFormData() {
 		errorPresent = true;
 	}
 	if(body.get("operationType") === "COUNTDOWN") {
-		if(body.get("date").length == 0 && body.get("time").length == 0) {
+		if(body.get("date").length == 0 || body.get("time").length == 0) {
 			appendError("Neither date nor time can be null");
 			errorPresent = true;
 		}
@@ -119,7 +119,7 @@ function appendError(message) {
 	error_div.setAttribute("class", "alert alert-danger mt-1");
 	error_div.innerHTML = message;
 
-	document.getElementById("errors").appendChild(error_div);
+	document.getElementById("status").appendChild(error_div);
 }
 
 function clearErrors() {
