@@ -130,10 +130,13 @@ function clearErrors() {
 }
 
 function showSuccessMessage(responseObj) {
-	console.log(responseObj);
-	let success_div = document.createElement("div");
-	success_div.setAttribute("class", "alert alert-success mt-1");
-	success_div.innerHTML = "The data was sucessfully transmitted";
+	if(responseObj.responseStatus == 200) {
+		let success_div = document.createElement("div");
+		success_div.setAttribute("class", "alert alert-success mt-1");
+		success_div.innerHTML = "The data was sucessfully transmitted to the server";
+
+		document.getElementById("status").appendChild(success_div);
+	}
 }
 
 function sendFormData(body) {
