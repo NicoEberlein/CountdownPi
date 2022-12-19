@@ -128,6 +128,7 @@ function validateFormData() {
 }
 
 function appendError(message) {
+	console.log("Appending error with message " + message);
 	let error_div = document.createElement("div");
 	error_div.setAttribute("class", "alert alert-danger mt-1");
 	error_div.innerHTML = message;
@@ -138,7 +139,7 @@ function appendError(message) {
 function clearErrors() {
 	let errors = document.getElementsByClassName("alert");
 	for(var i=0;i<errors.length;i++) {
-		document.getElementById("errors").removeChild(errors[i]);
+		document.getElementById("status").removeChild(errors[i]);
 	}
 }
 
