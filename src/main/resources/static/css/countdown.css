@@ -1,39 +1,32 @@
 body{
 	
-		/*BackgroundMode = ONECOLOR
-        background: #FF00FF;
-        */
+	/* Font Settings */
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 400;
+	font-size: 60px;
+	text-shadow: 2px 2px 11px rgba(0, 0, 0, 1);
+	color: white;
         
-        /*BackgroundMode = BLURREDIMAGE
-        background-image: url("5.jpg");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        */
+	/* Hide cursor and scroll bar */
+	cursor: none;
+	overflow: hidden;
         
-        /*Font Settings*/
-        font-family: 'Roboto', sans-serif;
-        font-weight: 700;
-        font-size: 60px;
-        text-shadow: 2px 2px 11px rgba(0, 0, 0, 1);
-        color: white;
-        
-        /*Hide cursor and scroll bar
-        cursor: none;
-        overflow: hidden;
-        */
 }
 
 hr{
+
 	border: 0;
-    border: 3px solid white;
-    border-radius: 3px;
+	border: 3px solid white;
+	border-radius: 3px;
 	opacity: 0.8;
+
 }
 
 #ot-both-logo{
+
 	width: 550px;
-	heigth: 550px;
+	height: 550px;
 	margin: 0 auto 0 auto;
+
 }
 
