@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -108,43 +109,14 @@ public class RestApiController {
 
 	}
 	
-	@PostMapping(value = "/countdownData", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Object> setCountdownData(@RequestParam("operationType") OperationType operationType,
-			@RequestParam("backgroundMode") BackgroundMode backgroundMode, @RequestParam("image") String image,
-			@RequestParam("heading") String heading, @RequestParam("datetime") String datetime,
-			@RequestParam("message") String message, @RequestParam("color") String color) throws ParseException, IOException {
-		
-		
-		if(operationType == OperationType.COUNTDOWN) {
-		
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
-			Date parsedDate = null;
-			try {
-				parsedDate = format.parse(datetime);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				throw new ParseException("Error parsing provided date. Please enter date in format yyyy-MM-dd-hh:mm", 0);
-			}
-			
-			try {
-				settingsRepository.saveCountdownSettings(new OTCountdownSetting(operationType, backgroundMode, image, heading, color, parsedDate));
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new IOException("An error occured while saving countdownSettings to repository");
-			}
-			
-		}else if(operationType == OperationType.MESSAGE) {
-		
-			try {
-				settingsRepository.saveCountdownSettings(new OTMessageSetting(operationType, backgroundMode, image, heading, color, message));
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new IOException("An error occured while saving countdownSettings to repository");
-			}
-			
-		}
-		
-		return ResponseEntity.ok().build();
+	@PostMapping(value = "/countdownData", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Setting> setCountdownData(@RequestBody Setting settings) throws IOException {
+
+		System.out.println(settings);
+
+		settingsRepository.saveCountdownSettings(settings);
+
+		return ResponseEntity.ok(settings);
 
 		
 
