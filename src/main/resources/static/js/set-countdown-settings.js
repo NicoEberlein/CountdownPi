@@ -1,3 +1,5 @@
+var operationType;
+
 class Setting {
 	constructor(backgroundMode, image, heading, color) {
 		Object.assign(this, {backgroundMode, image, heading, color});
@@ -30,7 +32,7 @@ class CountdownSetting extends Setting {
 
 	toJSON() {
 		return {
-			backgorundMode: this.backgroundMode,
+			backgroundMode: this.backgroundMode,
 			image: this.image,
 			heading: this.heading,
 			color: this.color,
@@ -49,8 +51,6 @@ class MessageSetting extends Setting {
 	}
 }
 
-var operationType;
-
 window.onload = function() {
 
 	sendRequest(injectAvailableImages, window.location.origin + "/rest/getAvailableLogos", "GET", null, new Headers());
@@ -58,17 +58,17 @@ window.onload = function() {
 	buttonClick("COUNTDOWN");
 	
 	document.getElementById("ot-both-background-mode").addEventListener("change", function() {
-		
+
 		if(document.getElementById("ot-both-background-mode").value === "BLURREDIMAGE") {
-			
+
 			document.getElementById("bm-onecolor-color").disabled = true;
 
 		}else if(document.getElementById("ot-both-background-mode").value === "ONECOLOR") {
-			
+
 			document.getElementById("bm-onecolor-color").disabled = false;
-			
+
 		}
-		
+
 	});
 
 }
@@ -82,7 +82,9 @@ function buttonClick(buttonType) {
 		document.getElementById("ot-message-input-message").readOnly = true;
 		document.getElementById("ot-countdown-input-date").readOnly = false;
 		document.getElementById("ot-countdown-input-time").readOnly = false;
-		// Change button color
+
+		document.getElementById("button-countdown").setAttribute("class", "selected-button");
+		document.getElementById("button-message").setAttribute("class", "deselected-button");
 
 	}else if(buttonType === "MESSAGE") {
 
@@ -91,7 +93,9 @@ function buttonClick(buttonType) {
 		document.getElementById("ot-message-input-message").readOnly = false;
 		document.getElementById("ot-countdown-input-date").readOnly = true;
 		document.getElementById("ot-countdown-input-time").readOnly = true;
-		//Change button color
+
+		document.getElementById("button-message").setAttribute("class", "selected-button");
+		document.getElementById("button-countdown").setAttribute("class", "deselected-button");
 	}
 }
 
@@ -127,7 +131,7 @@ function sendRequest(functionToCall, url, type, body, headers){
 		})
 		.catch(function(error) {
 			console.log(error.message);
-			appendError("Server returned error with code " + error.message);
+			appendStatus("Server returned error with code " + error.message, false);
 		});
 }
 
@@ -137,12 +141,12 @@ function injectAvailableImages(responseObj) {
 	for(i=0;i<response.length;i++) {
 		document.getElementById("ot-both-input-images").options.add(new Option(response[i], response[i]));
 	}
-	
+
 }
 
 function validateFormData() {
 
-	clearErrors();
+	clearStatus();
 
 	const setting = operationType === "Countdown" ? new CountdownSetting() : new MessageSetting();
 
@@ -150,44 +154,27 @@ function validateFormData() {
 		{[element.name]: element.value}
 	)).forEach(element => (Object.assign(setting, element)));
 
-	sendFormData(setting);
+	sendRequest(appendStatus, window.location.origin + "/rest/countdownData", "POST", JSON.stringify(setting), new Headers(
+		{'content-type': 'application/json'}));
 
 }
 
-function appendError(message) {
-	console.log("Appending error with message " + message);
-	let error_div = document.createElement("div");
-	error_div.setAttribute("class", "alert alert-danger mt-1");
-	error_div.innerHTML = message;
+function appendStatus(response, successful = true) {
 
-	document.getElementById("status").appendChild(error_div);
+	console.dir(response);
+
+	let statusHTML = document.getElementById("status").innerHTML;
+	statusHTML = `
+		${statusHTML} 
+		<strong class="${successful ? 'success' : 'error'}">
+			${response.responseBody ? 'Successfully changed countdown settings' :  response}	
+		</strong>
+	`;
+	document.getElementById("status").innerHTML = statusHTML;
 }
 
-function clearErrors() {
-	let errors = document.getElementsByClassName("alert");
-	for(var i=0;i<errors.length;i++) {
-		document.getElementById("status").removeChild(errors[i]);
-	}
-}
-
-function showSuccessMessage(responseObj) {
-	if(responseObj.responseStatus == 200) {
-		let success_div = document.createElement("div");
-		success_div.setAttribute("class", "alert alert-success mt-1");
-		success_div.innerHTML = "The data was sucessfully transmitted to the server";
-
-		document.getElementById("status").appendChild(success_div);
-	}
-}
-
-function sendFormData(body) {
-
-	console.log(JSON.stringify(body));
-
-	sendRequest(showSuccessMessage, window.location.origin + "/rest/countdownData", "POST", JSON.stringify(body), new Headers(
-		{'content-type': 'application/json'}
-	));
-
+function clearStatus() {
+	document.getElementById("status").innerHTML = "";
 }
 
 
