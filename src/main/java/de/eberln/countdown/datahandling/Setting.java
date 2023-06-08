@@ -37,9 +37,8 @@ public abstract class Setting {
 	//null when BackgroundMode = BLURREDIMAGE
 	private String color;
 	
-	protected Setting(OperationType operationType, BackgroundMode backgroundMode, String image, String heading, String color) {
+	protected Setting(BackgroundMode backgroundMode, String image, String heading, String color) {
 		
-		this.operationType = operationType;
 		this.backgroundMode = backgroundMode;
 		this.image = image;
 		this.heading = heading;
@@ -49,14 +48,6 @@ public abstract class Setting {
 	
 	protected Setting( ) {
 		
-	}
-
-	public OperationType getOperationType() {
-		return operationType;
-	}
-
-	public void setOperationType(OperationType operationType) {
-		this.operationType = operationType;
 	}
 
 	public BackgroundMode getBackgroundMode() {
@@ -90,7 +81,6 @@ public abstract class Setting {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	
-	
+
 	
 }

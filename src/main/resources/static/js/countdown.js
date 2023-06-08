@@ -12,7 +12,7 @@ function receiveCountdownData() {
 
 function processCountdownData(data) {
 
-    if(data.operationType === "COUNTDOWN") {
+    if(data["@type"] === "Countdown") {
         document.getElementById("ot-countdown-countdown").hidden = false;
         document.getElementById("ot-message-text").hidden = true;
 
@@ -23,7 +23,7 @@ function processCountdownData(data) {
             
         }
 
-    }else if(data.operationType === "MESSAGE") {
+    }else if(data["@type"] === "Message") {
         document.getElementById("ot-message-text").hidden = false;
         document.getElementById("ot-countdown-countdown").hidden = true;
         document.getElementById("ot-message-text").innerHTML = data.message;
