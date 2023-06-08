@@ -4,14 +4,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OTCountdownSetting extends Setting {
 
 	private Date date;
 	
-	public OTCountdownSetting(BackgroundMode backgroundMode, String image,
-			String heading, String color, String date) {
+
+	@JsonCreator
+	public OTCountdownSetting(
+		@JsonProperty("backgroundMode") BackgroundMode backgroundMode,
+		@JsonProperty("image") String image,
+		@JsonProperty("heading") String heading,
+		@JsonProperty("color") String color,
+		@JsonProperty("datetime") String datetime) {
+			
 		super(backgroundMode, image, heading, color);
-		setDate(date);
+		setDate(datetime);
 	}
 	
 	public OTCountdownSetting() {
@@ -30,10 +40,5 @@ public class OTCountdownSetting extends Setting {
 			System.err.println("Error parsing provided date. Please provide string with format 'yyyy-MM-dd-hh:mm'");
 		}
 	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	
 }

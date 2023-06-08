@@ -23,8 +23,6 @@ public abstract class Setting {
 		BLURREDIMAGE
 	}
 	
-	private OperationType operationType;
-	
 	//OT COUNTDOWN,MESSAGE
 	private BackgroundMode backgroundMode;
 	
