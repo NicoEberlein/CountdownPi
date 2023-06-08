@@ -1,3 +1,56 @@
+class Setting {
+	constructor(backgroundMode, image, heading, color) {
+		Object.assign(this, {backgroundMode, image, heading, color});
+	}
+}
+
+class CountdownSetting extends Setting {
+
+	#date;
+	#time;
+
+	constructor(backgroundMode, image, heading, color, date, time) {
+		super(backgroundMode, image, heading, color);
+		this["@type"] = "Countdown";
+		this.#date = date;
+		this.#time = time;
+	}
+
+	set date(date) {
+		this.#date = date;
+	}
+
+	set time(time) {
+		this.#time = time;
+	}
+
+	get datetime() {
+		return `${this.#date}-${this.#time}`;
+	}
+
+	toJSON() {
+		return {
+			backgorundMode: this.backgroundMode,
+			image: this.image,
+			heading: this.heading,
+			color: this.color,
+			datetime: this.datetime,
+			'@type': this["@type"]
+		}
+	}
+}
+
+class MessageSetting extends Setting {
+
+	constructor(backgroundMode, image, heading, color, message) {
+		super(backgroundMode, image, heading, color);
+		this.message = message;
+		this["@type"] = "Message";
+	}
+}
+
+var operationType;
+
 window.onload = function() {
 
 	sendRequest(injectAvailableImages, window.location.origin + "/rest/getAvailableLogos", "GET", null, new Headers());
@@ -24,22 +77,21 @@ function buttonClick(buttonType) {
 
 	if(buttonType === "COUNTDOWN") {
 
-		document.getElementById("ot-selection-hidden").value = "COUNTDOWN";
+		operationType = "Countdown";
+
 		document.getElementById("ot-message-input-message").readOnly = true;
 		document.getElementById("ot-countdown-input-date").readOnly = false;
 		document.getElementById("ot-countdown-input-time").readOnly = false;
-		document.getElementById("button-countdown").setAttribute("class", "btn btn-dark");
-		document.getElementById("button-message").setAttribute("class", "btn btn-light");
+		// Change button color
 
 	}else if(buttonType === "MESSAGE") {
 
-		document.getElementById("ot-selection-hidden").value = "MESSAGE";
+		operationType = "Message";
+
 		document.getElementById("ot-message-input-message").readOnly = false;
 		document.getElementById("ot-countdown-input-date").readOnly = true;
 		document.getElementById("ot-countdown-input-time").readOnly = true;
-		document.getElementById("button-countdown").setAttribute("class", "btn btn-light");
-		document.getElementById("button-message").setAttribute("class", "btn btn-dark");
-
+		//Change button color
 	}
 }
 
@@ -92,38 +144,13 @@ function validateFormData() {
 
 	clearErrors();
 
-	var body = new FormData(document.getElementById("countdown-settings-form"));
-	
-	if(body.get("backgroundMode") === "BLURREDIMAGE") {
-		body.append("color", null);
-	}
+	const setting = operationType === "Countdown" ? new CountdownSetting() : new MessageSetting();
 
-	let errorPresent = false;
+	Array.from(document.querySelectorAll(".interesting-value:not([readonly])")).map((element) => (
+		{[element.name]: element.value}
+	)).forEach(element => (Object.assign(setting, element)));
 
-	if(body.get("image") == null) {
-		appendError("You must select a logo");
-		errorPresent = true;
-	}
-
-	if(body.get("heading").length == 0) {
-		appendError("You must specify a heading");
-		errorPresent = true;
-	}
-	if(body.get("operationType") === "COUNTDOWN") {
-		if(body.get("date").length == 0 || body.get("time").length == 0) {
-			appendError("Neither date nor time can be null");
-			errorPresent = true;
-		}
-	}else if(body.get("operationType") === "MESSAGE") {
-		if(body.get("message").length == 0) {
-			appendError("You must specify a message");
-			errorPresent = true;
-		}
-	}
-
-	if(!errorPresent) {
-		sendFormData(body);
-	}
+	sendFormData(setting);
 
 }
 
@@ -155,13 +182,12 @@ function showSuccessMessage(responseObj) {
 
 function sendFormData(body) {
 
-	var datetime = body.get("date") + "-" + body.get("time");
+	console.log(JSON.stringify(body));
 
-	body.delete("date");
-	body.delete("time");
-	body.append("datetime", datetime);
+	sendRequest(showSuccessMessage, window.location.origin + "/rest/countdownData", "POST", JSON.stringify(body), new Headers(
+		{'content-type': 'application/json'}
+	));
 
-	sendRequest(showSuccessMessage, window.location.origin + "/rest/countdownData", "POST", body, new Headers());
 }
 
 
